@@ -1,0 +1,3 @@
+-r base.txt
+-e git+ssh://git@github.com/nottrobin/fenchurch.git#egg=fenchurch
+-e git://github.com/nottrobin/django-template-extensions.git#egg=django-template-extensions

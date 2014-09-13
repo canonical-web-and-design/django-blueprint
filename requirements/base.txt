@@ -1,0 +1,2 @@
+Django==1.7
+dj-static==0.0.6
