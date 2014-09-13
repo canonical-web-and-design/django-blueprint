@@ -17,6 +17,7 @@ SECRET_KEY = 'o@kjnphb9#+3fl80i#$v$+0la3u^atow)b33h*bafbcwir0w04'
 # See https://docs.djangoproject.com/en/dev/ref/contrib/
 INSTALLED_APPS = [
     'django.contrib.staticfiles',  # Needed for STATICFILES_DIRS to work
+    'template_extensions'
 ]
 
 MIDDLEWARE_CLASSES = []
@@ -36,4 +37,5 @@ TEMPLATE_DIRS = [os.path.join(BASE_DIR, "templates")]
 # See http://tinyurl.com/django-context-processors
 TEMPLATE_CONTEXT_PROCESSORS = [
     "django.core.context_processors.static",  # Provides STATIC_URL
+    "template_extensions.asset_server_url",  # {{ ASSET_SERVER_URL }}
 ]
