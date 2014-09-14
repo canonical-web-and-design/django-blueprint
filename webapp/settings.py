@@ -31,7 +31,6 @@ TIME_ZONE = 'UTC'
 USE_I18N = False
 USE_L10N = True
 USE_TZ = True
-DEBUG = True
 STATIC_ROOT = 'static'
 STATIC_URL = '/static/'
 STATICFILES_FINDERS = ['template_extensions.finders.RootFileFinder']
