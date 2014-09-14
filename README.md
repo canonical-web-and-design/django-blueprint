@@ -1,2 +1,3 @@
+- Instructions for cloning and pushing
+- Instructions for pushing to qa ?
 - Customise README from README.template.md
-- Add any QA or live URLs to settings.py
