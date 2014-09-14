@@ -1,0 +1,2 @@
+- Customise README from README.template.md
+- Add any QA or live URLs to settings.py
