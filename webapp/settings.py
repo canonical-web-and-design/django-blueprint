@@ -17,10 +17,7 @@ SECRET_KEY = 'o@kjnphb9#+3fl80i#$v$+0la3u^atow)b33h*bafbcwir0w04'
 # See https://docs.djangoproject.com/en/dev/ref/contrib/
 INSTALLED_APPS = ['template_extensions']
 
-ALLOWED_HOSTS = [
-    '0.0.0.0', '127.0.0.1', 'localhost',
-    # Add production and QA hosts
-]
+ALLOWED_HOSTS = ['*']
 
 MIDDLEWARE_CLASSES = []
 
