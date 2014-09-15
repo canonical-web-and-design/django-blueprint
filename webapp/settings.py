@@ -2,9 +2,11 @@
 Django settings for this project
 """
 
-# Go to http://www.miniwebtool.com/django-secret-key-generator/
-# And generate a secret key to put here
-SECRET_KEY = ''
+# A static site has no need of a secure secret key
+# since the key is only used for signing sessions, password hashes, etc.
+# none of which have any place in a static site
+
+SECRET_KEY = 'SECRET_KEY_INSECURE_PLACEHOLDER'  # !! CHANGE ME !!
 
 # See https://docs.djangoproject.com/en/dev/ref/contrib/
 INSTALLED_APPS = [
