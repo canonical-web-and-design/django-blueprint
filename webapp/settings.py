@@ -1,5 +1,5 @@
 """
-Django settings for this project
+Django project settings
 """
 
 # A static site has no need of a secure secret key
