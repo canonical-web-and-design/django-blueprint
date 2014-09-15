@@ -1,18 +1,10 @@
 """
-Django settings for canonical project.
-
-For more information on this file, see
-https://docs.djangoproject.com/en/1.6/topics/settings/
-
-For the full list of settings and their values, see
-https://docs.djangoproject.com/en/1.6/ref/settings/
+Django settings for this project
 """
 
-import os
-BASE_DIR = os.path.dirname(os.path.dirname(__file__))
-
-# Keep it secret, keep it safe!
-SECRET_KEY = 'o@kjnphb9#+3fl80i#$v$+0la3u^atow)b33h*bafbcwir0w04'
+# Go to http://www.miniwebtool.com/django-secret-key-generator/
+# And generate a secret key to put here
+SECRET_KEY = ''
 
 # See https://docs.djangoproject.com/en/dev/ref/contrib/
 INSTALLED_APPS = [
@@ -34,10 +26,13 @@ USE_TZ = True
 STATIC_ROOT = 'static'
 STATIC_URL = '/static/'
 STATICFILES_FINDERS = ['django_static_root_finder.StaticRootFinder']
-TEMPLATE_DIRS = [os.path.join(BASE_DIR, 'templates')]
+TEMPLATE_DIRS = ['templates']
 
 # See http://tinyurl.com/django-context-processors
 TEMPLATE_CONTEXT_PROCESSORS = [
     "django.core.context_processors.static",  # {{ STATIC_URL }}
     "django_asset_server_url.asset_server_url",  # {{ ASSET_SERVER_URL }}
 ]
+
+import os
+BASE_DIR = os.path.dirname(os.path.dirname(__file__))
