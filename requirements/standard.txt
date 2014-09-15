@@ -1,3 +1,6 @@
 -r base.txt
 -e git+ssh://git@github.com/nottrobin/fenchurch.git#egg=fenchurch
--e git://github.com/nottrobin/django-template-extensions.git#egg=django-template-extensions
+git+https://github.com/ubuntudesign/django-versioned-static.git
+git+https://github.com/ubuntudesign/django-collectstatic-disabled.git
+git+https://github.com/ubuntudesign/django-asset-server-url.git
+git+https://github.com/ubuntudesign/django-static-root-finder.git
