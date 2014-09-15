@@ -172,15 +172,17 @@ pip-cache:
 	    echo "PIP_CACHE_REPO not set, exiting"; \
 	    exit 1; \
 	fi
-	
+
 	bzr branch ${PIP_CACHE_REPO} pip-cache
+
+# "make it so"
+# ===
 
 # The below targets
 # are just there to allow you to type "make it so"
 # as a replacement for "make develop"
 # - Thanks to https://directory.canonical.com/list/ircnick/deadlight/
 
-it:
-	# Nothing
+it: sass
 
 so: develop
