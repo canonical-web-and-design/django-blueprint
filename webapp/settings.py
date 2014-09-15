@@ -2,10 +2,19 @@
 Django project settings
 """
 
-# A static site has no need of a secure secret key
-# since the key is only used for signing sessions, password hashes, etc.
-# none of which have any place in a static site
-
+# Although the insecure, easily guessed SECRET_KEY
+# 'SECRET_KEY_INSECURE_PLACEHOLDER' *will work* with Django,
+# you *should* change it when you get the chance.
+# E.g. from http://www.miniwebtool.com/django-secret-key-generator/
+#
+# While this static-django-bootstrap app is only being used as intended -
+# to serve essentially static templates with no dynamic functionality,
+# an insecure SECRET_KEY won't introduce any insecurities in the application.
+#
+# However, as soon as you start using sessions, passwords, crypto functions
+# or anything that uses django.utils.crypt.get_random_string(),
+# you will need a strong SECRET_KEY to ensure your app remains secure
+# (see: http://stackoverflow.com/a/15383766/613540)
 SECRET_KEY = 'SECRET_KEY_INSECURE_PLACEHOLDER'  # !! CHANGE ME !!
 
 # See https://docs.djangoproject.com/en/dev/ref/contrib/
