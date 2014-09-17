@@ -1,4 +1,4 @@
-Static Django bootstrap
+Static Django website blueprint
 ===
 
 A stripped-down bootstrap Django project to serving static templates directly.
