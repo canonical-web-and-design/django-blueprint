@@ -59,6 +59,19 @@ vim templates/error/404.html  # Customise the 404 page
 vim templates/error/500.html  # Customise the 500 page
 ```
 
+### Dev port
+
+By default, `make develop` will start the development server on port 8099.
+However you may want to customise this by editing the `Makefile`:
+
+``` bash
+# Makefile
+
+ifeq ($(PORT),)
+    PORT=8054
+endif
+```
+
 ### Secret key
 
 The app comes with the SECRET_KEY setting set to

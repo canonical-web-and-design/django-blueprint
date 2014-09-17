@@ -1,5 +1,14 @@
 SHELL := /bin/bash # Use bash syntax
 
+# Customise the dev server port
+# ===
+ifeq ($(PORT),)
+	PORT=8099
+endif
+
+# Help text
+# ===
+
 define HELP_TEXT
 
 Basic usage
@@ -44,6 +53,8 @@ ifeq ($(ENVPATH),)
 endif
 VEX=vex --path ${ENVPATH}
 
+
+
 ##
 # Print help text
 ##
@@ -64,7 +75,7 @@ setup: install-dependencies update-env
 # Run the Django development server
 ##
 dev-server:
-	${VEX} ./manage.py runserver_plus 0.0.0.0:8007
+	${VEX} ./manage.py runserver_plus 0.0.0.0:${PORT}
 
 ##
 # Build SASS
@@ -186,3 +197,5 @@ pip-cache:
 it: sass
 
 so: develop
+
+.PHONY: help develop setup dev-server sass watch-sass update-env 
