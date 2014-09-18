@@ -25,7 +25,13 @@ make setup    # Install dependencies etc. for development
 make develop  # Run the development server
 ```
 
-Now visit <http://0.0.0.0:8007>.
+Now visit <http://0.0.0.0:8099>.
+
+You can customise the port for the dev server by specifying the `PORT` environment variable:
+
+``` bash
+PORT=8054 make develop
+```
 
 Customisation
 ---
