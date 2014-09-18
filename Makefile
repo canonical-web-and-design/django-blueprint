@@ -3,7 +3,7 @@ SHELL := /bin/bash # Use bash syntax
 # Customise the dev server port
 # ===
 ifeq ($(PORT),)
-	PORT=8099
+	PORT=8099  # Default port for the dev server
 endif
 
 # Help text

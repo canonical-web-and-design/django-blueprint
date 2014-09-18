@@ -74,7 +74,7 @@ However you may want to customise this by editing the `Makefile`:
 # Makefile
 
 ifeq ($(PORT),)
-    PORT=8054
+    PORT=8099  # Default port for the dev server
 endif
 ```
 
