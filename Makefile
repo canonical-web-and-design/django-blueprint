@@ -110,7 +110,7 @@ create-env:
 # Only if inside a virtualenv
 ##
 install-requirements:
-	if [ "${VIRTUAL_ENV}" ]; then pip install -r requirements/dev.txt; fi
+	if [ "${VIRTUAL_ENV}" ]; then pip install --exists-action=w -r requirements/dev.txt; fi
 
 ##
 # Install required system dependencies
