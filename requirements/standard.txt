@@ -1,5 +1,2 @@
 -r base.txt
 -e git+ssh://git@github.com/nottrobin/fenchurch.git#egg=fenchurch
-django-versioned-static-url==0.1
-django-static-root-finder==0.1
-django-asset-server-url==0.1
