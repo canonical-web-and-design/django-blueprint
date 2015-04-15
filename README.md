@@ -1,8 +1,8 @@
 Static Django website blueprint
 ===
 
-A stripped-down bootstrap Django project to serving static templates directly.
-It is intented as a bootstrap for the Ubuntu design team's informational sites.
+A stripped-down blueprint Django project to serving static templates directly.
+It is intented as a basis for the Ubuntu design team's informational sites.
 
 Much of Django's dynamic functionality (e.g. sessions, any database interation)
 has been removed. URLs map directly to template locations, so creating a new
@@ -18,7 +18,7 @@ Basic usage
 Just clone the project and delete its version history:
 
 ``` bash
-git clone https://github.com/ubuntudesign/static-django-bootstrap.git example-project
+git clone https://github.com/ubuntudesign/static-django-website-blueprint.git example-project
 cd example-project
 rm -rf .git   # Remove the existing git information
 make setup    # Install dependencies etc. for development
