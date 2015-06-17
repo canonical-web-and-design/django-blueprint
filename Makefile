@@ -1,59 +1,52 @@
-SHELL := /bin/bash # Use bash syntax
+SHELL := /bin/bash  # Use bash syntax
 
-# Customise the dev server port
+# Settings
 # ===
+
+# Default port for the dev server - can be overridden e.g.: "PORT=1234 make run"
 ifeq ($(PORT),)
-	PORT=8099  # Default port for the dev server
+	# ** CHANGE THIS **
+	PORT=8099
 endif
+
+# Settings
+# ===
+# ** CHANGE THE PROJECT NAME **
+PROJECT_NAME=django-blueprint
+APP_IMAGE=${PROJECT_NAME}
+SASS_CONTAINER=${PROJECT_NAME}-sass
 
 # Help text
 # ===
 
 define HELP_TEXT
 
-Basic usage
+${PROJECT_NAME} - A Django website by the Canonical web team
 ===
 
-> make setup    # Install dependencies
-> make develop  # Run watch-sass and dev-server
+Basic usage
+---
 
-Now browse to http://0.0.0.0:8007 to run the site
+> make run         # Prepare Docker images and run the Django site
+
+Now browse to http://127.0.0.1:${PORT} to run the site
 
 All commands
-===
+---
 
-To understand commands in more details, simply read the Makefile
+> make help               # This message
+> make run                # build, watch-sass and run-site
+> make it so              # a fun alias for "make run"
+> make build-app-image    # Build the docker image
+> make run-site           # Use Docker to run the website
+> make watch-sass         # Setup the sass watcher, to compile CSS
+> make compile-sass       # Setup the sass watcher, to compile CSS
+> make stop-sass-watcher  # If the watcher is running in the background, stop it
+> make clean              # Delete all created images and containers
 
-> make help                  # Print this help
-> make develop               # (or `make it so`) `watch-sass` & `dev-server`
-> make setup                 # `install-dependencies` & `update-env`
-> make dev-server            # Run the Django server in the python virtualenv
-> make sass                  # Compile all SASS files to CSS
-> make watch-sass            # Background - watch SASS files, auto-compile to CSS on changes
-> make update-env            # Update python dependencies in the python virtualenv
-> make create-env            # Create a python virtualenv in the "env" folder
-> make install-requirements  # Install pip requirements into virtualenv
-> make install-dependencies  # Install system dependencies
-> make apt-dependencies      # Install system dependencies for debian-based OSs
-> make brew-dependencies     # Install system dependencies for MacOS
-> make clean                 # Delete any extraneous files that have been created for development
-> make dokku-start           # `sass` & `run gunicorn` - for dokku to run
-> make run-gunicorn          # Run the webapp with gunicorn
-> make rebuild-pip-cache     # To update the PIP_CACHE_REPO with pip requirements 
-> make pip-cache             # Pull down the PIP_CACHE_REPO into pip-cache dir
+(To understand commands in more details, simply read the Makefile)
 
 endef
-
-# Variables
-##
-
-ENVPATH=${VIRTUAL_ENV}
-ifeq ($(ENVPATH),)
-	ENVPATH=env
-endif
-VEX=vex --path ${ENVPATH}
-
-
 
 ##
 # Print help text
@@ -62,140 +55,69 @@ help:
 	$(info ${HELP_TEXT})
 
 ##
-# Auto-compile sass and start the development server
+# Use docker to run the sass watcher and the website
 ##
-develop: watch-sass dev-server
+run:
+	${MAKE} build-app-image
+	${MAKE} watch-sass &
+	${MAKE} run-site
 
 ##
-# Prepare the project
+# Build the docker image
 ##
-setup: install-dependencies update-env
+build-app-image:
+	docker build -t ${APP_IMAGE} .
 
 ##
-# Run the Django development server
+# Run the Django site using the docker image
 ##
-dev-server:
-	${VEX} ./manage.py runserver_plus 0.0.0.0:${PORT}
+run-site:
+	@echo ""
+	@echo "======================================="
+	@echo "Running server on http://127.0.0.1:${PORT}"
+	@echo "======================================="
+	@echo ""
+	docker run -p 0.0.0.0:${PORT}:8000 -v `pwd`:/app -w=/app ${APP_IMAGE} ./manage.py runserver 0.0.0.0:8000
 
 ##
-# Build SASS
-##
-sass:
-	sass --style compressed --update static/css/
-
-##
-# Run SASS watcher
-# - Runs in the background
-# - Auto-compiles SASS files to CSS on changes
+# Create or start the sass container, to rebuild sass files when there are changes
 ##
 watch-sass:
-	sass --debug-info --watch static/css/ &
+	docker attach ${SASS_CONTAINER} || docker start -a ${SASS_CONTAINER} || docker run --name ${SASS_CONTAINER} -v `pwd`:/app ubuntudesign/sass sass --debug-info --watch /app/static/css
 
 ##
-# Get virtualenv ready
+# Force a rebuild of the sass files
 ##
-update-env:
-	${MAKE} create-env
-
-	${VEX} ${MAKE} install-requirements
+compile-sass:
+	docker run -v `pwd`:/app ubuntudesign/sass sass --debug-info --update /app/static/css --force
 
 ##
-# Make virtualenv directory if it doesn't exist and we're not in an env
+# If the watcher is running in the background, stop it
 ##
-create-env:
-	if [ ! -d ${ENVPATH} ]; then virtualenv ${ENVPATH}; fi
+stop-sass-watcher:
+	docker stop ${SASS_CONTAINER}
 
 ##
-# Install pip requirements
-# Only if inside a virtualenv
+# Re-create the app image (e.g. to update dependencies)
 ##
-install-requirements:
-	if [ "${VIRTUAL_ENV}" ]; then pip install --exists-action=w -r requirements/dev.txt; fi
-
-##
-# Install required system dependencies
-##
-install-dependencies:
-	if [ $$(command -v apt-get) ]; then ${MAKE} apt-dependencies; fi
-	if [ $$(command -v brew) ]; then ${MAKE} brew-dependencies; fi
-
-	if [ ! $$(command -v virtualenv) ]; then sudo pip install virtualenv; fi
-	if [ ! $$(command -v vex) ]; then sudo pip install vex; fi
-
-## Install dependencies with apt
-apt-dependencies:
-	if [ ! $$(command -v pip) ]; then sudo apt-get install python-pip; fi
-	if [ ! $$(command -v sass) ]; then sudo apt-get install ruby-sass; fi
-
-## Install dependencies with brew
-brew-dependencies:
-	if [ ! $$(command -v pip) ]; then sudo easy_install pip; fi
-	if [ ! $$(command -v sass) ]; then sudo gem install sass; fi
+rebuild-app-image:
+	-docker rmi -f ${APP_IMAGE}
+	${MAKE} build-app-image
 
 ##
-# Delete any generated files
+# Delete all created images and containers
 ##
 clean:
-	rm -rf env .sass-cache
-	find static/css -name '*.css*' -exec rm {} +  # Remove any .css files - should only be .sass files
-
-##
-# For dokku - build sass and run gunicorn
-##
-dokku-start: sass run-gunicorn
-
-##
-# Run the gunicorn app
-##
-run-gunicorn:
-	gunicorn webapp.wsgi
-
-# Production targets
-# ===
-
-# When creating a  new app, set where you want dependencies to be stored
-# PIP_CACHE_REPO=lp:~webteam-backend/example-project/dependencies
-
-##
-# Update the pip requirements cache repository
-##
-rebuild-pip-cache:
-	@if [ ! "${PIP_CACHE_REPO}" ]; then \
-	    echo "PIP_CACHE_REPO not set, exiting"; \
-	    exit 1; \
-	fi
-
-	rm -rf pip-cache
-	mkdir pip-cache
-	cd pip-cache && bzr init
-	bzr branch ${PIP_CACHE_REPO} pip-cache
-	pip install --exists-action=w --download pip-cache/ -r requirements/standard.txt
-	cd pip-cache && bzr add .
-	bzr commit pip-cache/ -m 'automatically updated requirements'
-	bzr push --directory pip-cache ${PIP_CACHE_REPO}
-	rm -rf pip-cache src
-
-##
-# Create the pip-cache from the PIP_CACHE_REPO
-##
-pip-cache:
-	@if [ ! "${PIP_CACHE_REPO}" ]; then \
-	    echo "PIP_CACHE_REPO not set, exiting"; \
-	    exit 1; \
-	fi
-
-	bzr branch ${PIP_CACHE_REPO} pip-cache
-
-# "make it so"
-# ===
+	-docker rm -f ${SASS_CONTAINER}
+	-docker rmi -f ${APP_IMAGE}
 
 # The below targets
 # are just there to allow you to type "make it so"
 # as a replacement for "make develop"
 # - Thanks to https://directory.canonical.com/list/ircnick/deadlight/
 
-it: sass
+it:
+so: run
 
-so: develop
-
-.PHONY: help develop setup dev-server sass watch-sass update-env 
+# Phone targets (don't correspond to files or directories)
+.PHONY: help build run run-site watch-sass compile-sass stop-sass-watcher rebuild-app-image it so
