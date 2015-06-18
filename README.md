@@ -15,46 +15,62 @@ only accessible by members of Canonical. We have plans to change this soon.
 Basic usage
 ---
 
-Just clone the project and delete its version history:
+Just clone the project and run the server:
 
 ``` bash
-git clone https://github.com/ubuntudesign/static-django-website-blueprint.git example-project
-cd example-project
-rm -rf .git   # Remove the existing git information
-make setup    # Install dependencies etc. for development
-make develop  # Run the development server
+git clone https://github.com/ubuntudesign/static-django-blueprint.git
+static-django-blueprint
+make run     # Download containers and run the dev server
 ```
 
 Now visit <http://0.0.0.0:8099>.
 
-You can customise the port for the dev server by specifying the `PORT` environment variable:
+You can run the server on a custom port by specifying the `PORT` environment variable:
 
 ``` bash
-PORT=8054 make develop
+PORT=8054 make run
 ```
 
 Customisation
 ---
 
-The most basic way to customise the project is to create templates and stylesheets:
+This project is intended to be forked and turned into a new project as follows:
+
+### Customise Makefile
+
+You should change the defaults in the [Makefile](Makefile) for the project name and the default port:
 
 ``` bash
-vim template/index.html  # Edit the homepage
-vim template/about.html  # Create a new page
-vim static/css/global.scss  # Edit the styles
-```
+# Makefile
 
-Your changes should show immediately. Your new `about.html` page should be
-immediately available at <http://0.0.0.0:8007/about>.
+ifeq ($(PORT),)
+    PORT=8765  # Set a new default port
+endif
+
+PROJECT_NAME=my-new-project  # Set a new project name
+``` 
 
 ### Readme
 
 You should probably customise the README for your new project:
 
 ``` bash
-cp README.template.md README.md  # Overwrite this README
-vim README.md  # Customise the README
+cp README.template.md README.md  # Overwrite this README with the template
+vim README.md                    # Customise the README
 ```
+
+### Templates and stylesheets
+
+Edit template and stylesheets:
+
+``` bash
+vim template/index.html     # Edit the homepage
+vim template/about.html     # Create a new page
+vim static/css/global.scss  # Edit the styles
+```
+
+Your changes should show immediately. E.g. the above `about.html` page should be
+immediately available at <http://0.0.0.0:8099/about>.
 
 ### Error pages
 
@@ -63,19 +79,6 @@ You will probably want to make your error pages look prettier:
 ``` bash
 vim templates/error/404.html  # Customise the 404 page
 vim templates/error/500.html  # Customise the 500 page
-```
-
-### Dev port
-
-By default, `make develop` will start the development server on port 8099.
-However you may want to customise this by editing the `Makefile`:
-
-``` bash
-# Makefile
-
-ifeq ($(PORT),)
-    PORT=8099  # Default port for the dev server
-endif
 ```
 
 ### Secret key

@@ -10,8 +10,7 @@ Basic usage
 To run the site locally:
 
 ``` bash
-make setup    # Install dependencies - only needed the first time
-make develop  # Auto-compile sass files and run the dev server
+make run # Download containers and run the dev server
 ```
 
 Now visit <http://127.0.0.1:8000>
