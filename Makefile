@@ -72,7 +72,7 @@ build-app-image:
 # Run the Django site using the docker image
 ##
 run-app-image:
-	$(if $(hash boot2docker 2> /dev/null), $(eval docker_ip := $(boot2docker ip)), $(eval docker_ip := 127.0.0.1))
+	$(eval docker_ip := `hash boot2docker 2> /dev/null && echo "\`boot2docker ip\`" || echo "127.0.0.1"`)
 
 	@echo ""
 	@echo "======================================="
