@@ -2,7 +2,7 @@
 ===
 
 This is a simple databaseless informational website project, based on
-[static-django-bootstrap](https://github.com/ubuntudesign/static-django-bootstrap).
+[django-blueprint](https://github.com/ubuntudesign/django-blueprint).
 
 Basic usage
 ---
