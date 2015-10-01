@@ -1,14 +1,16 @@
+# Modules
 from django.conf.urls import url
-from django_redirects_file import load_redirects
-from fenchurch import TemplateFinder
-from views import custom_404, custom_500
+from django_json_redirects import load_redirects
+from django_template_finder_view import TemplateFinder
 
+# Local
+from .views import custom_404, custom_500
+
+# Match any redirects first
 urlpatterns = load_redirects()
 
-# Standard patterns
-urlpatterns += [
-    url(r'^(?P<template>.*)/?$', TemplateFinder.as_view()),  # Fenchurch
-]
+# Try to find templates
+urlpatterns.append(url(r'^(?P<template>.*)/?$', TemplateFinder.as_view()))
 
 # Error handlers
 handler404 = custom_404
