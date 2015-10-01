@@ -1,4 +1,4 @@
-FROM python:2
+FROM python
 
 # Pip requirements files
 ADD requirements /requirements
