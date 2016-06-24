@@ -4,7 +4,7 @@ from django_yaml_redirects import load_redirects
 from django_template_finder_view import TemplateFinder
 
 # Local
-from .views import custom_404, custom_500
+from webapp.views import custom_404, custom_500
 
 # Match any redirects first
 urlpatterns = load_redirects()
