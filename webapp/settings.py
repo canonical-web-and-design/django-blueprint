@@ -2,6 +2,9 @@
 Django project settings
 """
 
+import os
+BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+
 # Although the insecure, easily guessed SECRET_KEY
 # 'SECRET_KEY_INSECURE_PLACEHOLDER' *will work* with Django,
 # you *should* change it when you get the chance.
@@ -17,33 +20,51 @@ Django project settings
 # (see: http://stackoverflow.com/a/15383766/613540)
 SECRET_KEY = 'SECRET_KEY_INSECURE_PLACEHOLDER'  # !! CHANGE ME !!
 
-# See https://docs.djangoproject.com/en/dev/ref/contrib/
-INSTALLED_APPS = ['django_versioned_static_url']
-
 ALLOWED_HOSTS = ['*']
+DEBUG = False
 
-MIDDLEWARE_CLASSES = []
-
-ROOT_URLCONF = 'webapp.urls'
-WSGI_APPLICATION = 'webapp.wsgi.application'
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 USE_I18N = False
 USE_L10N = False
 USE_TZ = False
-STATIC_ROOT = 'static'
-STATIC_URL = '/static/'
-STATICFILES_FINDERS = ['django_static_root_finder.StaticRootFinder']
-TEMPLATE_DIRS = ['templates']
 
-# See http://tinyurl.com/django-context-processors
-TEMPLATE_CONTEXT_PROCESSORS = [
-    "django.core.context_processors.static",  # {{ STATIC_URL }}
-    "django_asset_server_url.asset_server_url",  # {{ ASSET_SERVER_URL }}
+WSGI_APPLICATION = 'webapp.wsgi.application'
+ROOT_URLCONF = 'webapp.urls'
+APPEND_SLASH = False
+REMOVE_SLASH = True
+STATIC_ROOT = "static"
+STATIC_URL = '/static/'
+
+WHITENOISE_MAX_AGE = 31557600
+WHITENOISE_ALLOW_ALL_ORIGINS = False
+
+# See https://docs.djangoproject.com/en/dev/ref/contrib/
+INSTALLED_APPS = [
+    'django.contrib.staticfiles',
+    'django_versioned_static_url'
 ]
 
-import os
-BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+MIDDLEWARE_CLASSES = [
+    'unslashed.middleware.RemoveSlashMiddleware',
+]
+
+STATICFILES_FINDERS = [
+    'django_static_root_finder.finders.StaticRootFinder'
+]
+
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django_asset_server_url.asset_server_url',
+            ],
+        },
+    },
+]
 
 LOGGING = {
     'version': 1,
@@ -52,7 +73,7 @@ LOGGING = {
         'error_file': {
             'level': 'ERROR',
             'filename': os.path.join(BASE_DIR, 'django-error.log'),
-            'class':'logging.handlers.RotatingFileHandler',
+            'class': 'logging.handlers.RotatingFileHandler',
             'maxBytes': 1 * 1024 * 1024,
             'backupCount': 2
         }
