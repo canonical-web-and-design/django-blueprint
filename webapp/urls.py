@@ -1,6 +1,6 @@
 # Modules
 from django.conf.urls import url
-from django_json_redirects import load_redirects
+from django_yaml_redirects import load_redirects
 from django_template_finder_view import TemplateFinder
 
 # Local
