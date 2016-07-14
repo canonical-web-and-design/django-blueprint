@@ -36,7 +36,6 @@ REMOVE_SLASH = True
 STATIC_ROOT = "static"
 STATIC_URL = '/static/'
 
-WHITENOISE_MAX_AGE = 31557600
 WHITENOISE_ALLOW_ALL_ORIGINS = False
 
 # See https://docs.djangoproject.com/en/dev/ref/contrib/
