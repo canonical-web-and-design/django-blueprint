@@ -5,10 +5,8 @@ Django project settings
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
-# Although the insecure, easily guessed SECRET_KEY
-# 'SECRET_KEY_INSECURE_PLACEHOLDER' *will work* with Django,
-# you *should* change it when you get the chance.
-# E.g. from http://www.miniwebtool.com/django-secret-key-generator/
+# This will set the SECRET_KEY to "no_secret", unless the SECRET_KEY
+# environment variable is set.
 #
 # While this static-django-bootstrap app is only being used as intended -
 # to serve essentially static templates with no dynamic functionality,
@@ -18,10 +16,14 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 # or anything that uses django.utils.crypt.get_random_string(),
 # you will need a strong SECRET_KEY to ensure your app remains secure
 # (see: http://stackoverflow.com/a/15383766/613540)
-SECRET_KEY = 'SECRET_KEY_INSECURE_PLACEHOLDER'  # !! CHANGE ME !!
+#
+# At this point you should ensure the SECRET_KEY environment variable is set
+# in the Production deployment with a secure key, e.g. from
+# http://www.miniwebtool.com/django-secret-key-generator/
+SECRET_KEY = os.environ.get('SECRET_KEY', 'no_secret')
 
 ALLOWED_HOSTS = ['*']
-DEBUG = False
+DEBUG = os.environ.get('DJANGO_DEBUG', 'false').lower() == 'true'
 
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
