@@ -36,4 +36,5 @@ Thumbs.db
 
 # Linux
 *~
+.compose-project-name
 static/css
