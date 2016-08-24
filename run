@@ -44,4 +44,4 @@ docker run $([ -f .env ] && echo "--env-file .env") \
   --tty --interactive \
   --volume "`pwd`":"`pwd`" \
   --workdir "`pwd`" \
-  devrun $@
+  ubuntudesign/devrun:v1.2.0-candidate $@
