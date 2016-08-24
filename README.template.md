@@ -10,9 +10,9 @@ Basic usage
 To run the site locally:
 
 ``` bash
-make run # Download containers and run the dev server
+./run # Download containers, run the dev server and watch for sass changes
 ```
 
-Now visit <http://127.0.0.1:8000>
+Now visit <http://127.0.0.1:8090>.
 
 To see what other `make` commands are available, run `make help`.
