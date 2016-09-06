@@ -14,7 +14,6 @@ db.sqlite3
 
 # Node
 .npm/
-node_modules/
 npm-debug.log*
 
 # Runtime
@@ -36,3 +35,5 @@ Thumbs.db
 
 # Linux
 *~
+.compose-project-name
+static/css
